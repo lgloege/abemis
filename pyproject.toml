@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=42", "setuptools-scm>=7"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "abemis"
+version = "0.1.0-dev"
+authors = [
+  {name = "Luke Gloege", email = "lukegloege@gmail.com"}
+]
+description = "A tool to calculate activity-based emissions"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+classifiers = [
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Intended Audience :: Science/Research",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering",
+]
+dependencies = [
+  "numpy>=1.23",
+]
+
+[tool.setuptools]
+packages = ["abemis"]
+
+[tool.setuptools_scm]
+fallback_version = "9999"
+

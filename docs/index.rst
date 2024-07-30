@@ -35,4 +35,21 @@ Installation
    :maxdepth: 2
    :caption: Contents:
 
+   usage
    api
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Help and Reference
+
+   contributing
+   authors
+   GitHub Repo <https://github.com/lgloege/abemis>
+
+
+Indices and tables
+------------------
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

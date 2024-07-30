@@ -1,4 +1,4 @@
-from constants import Conversions
+from .constants import Conversions
 constants = Conversions()
 
 def cement_production(M, EF):
@@ -6,7 +6,7 @@ def cement_production(M, EF):
 
     .. math::
 
-        E = M \cdot EF
+        E = M \\cdot EF
 
     Parameters
     ----------
@@ -37,7 +37,7 @@ def lime_production(M, EF):
 
     .. math::
 
-        E = \sum_i M_i \cdot EF_i
+        E = \\sum_i M_i \\cdot EF_i
 
     where i is the type of lime
 
@@ -69,7 +69,7 @@ def glass_production(M, EF, CR):
 
     .. math::
 
-        E = \sum_i M_i \cdot EF_i \cdot (1 - CR_i)
+        E = \\sum_i M_i \\cdot EF_i \\cdot (1 - CR_i)
 
     where i is the type of glass
 
@@ -104,7 +104,7 @@ def non_energy_product_use(NEU, CC, ODU):
 
     .. math::
 
-        E = \sum_i (NEU_i \cdot CC_i \cdot ODU_i) \cdot CO2:C
+        E = \\sum_i (NEU_i \\cdot CC_i \\cdot ODU_i) \\cdot CO2:C
 
 
     Parameters

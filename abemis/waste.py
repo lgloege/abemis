@@ -1,6 +1,6 @@
 import numpy as np
 
-from constants import Conversions
+from .constants import Conversions
 constants = Conversions()
 
 def doc(A=0, B=0, C=0, D=0, E=0, F=0, *args, **kwargs):
@@ -334,7 +334,7 @@ def incineration_co2(m, wf, dm, cf, fcf, of):
 
     .. math::
 
-        E = m \cdot \sum_i (WF_i \cdot dm_i \cdot CF_i \cdot FCF_i \cdot OF_i) \cdot CO2:C
+        E = m \\cdot \\sum_i (WF_i \\cdot dm_i \\cdot CF_i \\cdot FCF_i \\cdot OF_i) \\cdot CO2:C
 
     where i is the type of the Solid Waste incinerated such as paper/cardboard, textile, food waste, etc.
 
@@ -373,7 +373,7 @@ def incineration_ch4(IW, EF):
 
     .. math::
 
-        E = \sum_i IW_i \cdot EF_i
+        E = \\sum_i IW_i \\cdot EF_i
 
     where i is the category or type of waste incinerated/open-burned, specified as follows:
 
@@ -409,7 +409,7 @@ def incineration_n2o(IW, EF):
 
     .. math::
 
-        E = \sum_i IW_i \cdot EF_i
+        E = \\sum_i IW_i \\cdot EF_i
 
     where i is the category or type of waste incinerated/open-burned, specified as follows:
 
@@ -445,7 +445,7 @@ def fod(msw, lo, r, ox, k, inventory_year):
 
     .. math::
 
-        E =  \\bigg\{ \sum_x \\big[ MSW_x \cdot Lo_x \cdot (1 - \exp^{-k}) \cdot \exp^{-k(t-x)} \\big]  - R(t) \\bigg\}  \cdot (1-OX)
+        E =  \\bigg\\{ \\sum_x \\big[ MSW_x \\cdot Lo_x \\cdot (1 - \\exp^{-k}) \\cdot \\exp^{-k(t-x)} \\big]  - R(t) \\bigg\\}  \\cdot (1-OX)
 
     Parameters
     ----------
@@ -496,7 +496,7 @@ def tow(p, bod, i):
 
     .. math::
 
-        TOW = P \cdot BOD \cdot I \cdot 365
+        TOW = P \\cdot BOD \\cdot I \\cdot 365
 
     Parameters
     ----------
@@ -533,7 +533,7 @@ def ef_wasterwater_ch4(B, MCF, U, T):
 
     .. math::
 
-        EF = B \cdot MCF_j \cdot U_i \cdot T_{i,j}
+        EF = B \\cdot MCF_j \\cdot U_i \\cdot T_{i,j}
 
     where i is the income group and j is the treatment/discharge pathway or system.
 
@@ -566,11 +566,11 @@ def ef_wasterwater_ch4(B, MCF, U, T):
 
 
 def wastewater_ch4(tow, s, ef, r):
-    """CH4 emissions from rice cultivation
+    """CH4 emissions from wastewater
 
     .. math::
 
-        E = [(TOW - S) \cdot EF - R] \cdot tonne:kg
+        E = [(TOW - S) \\cdot EF - R] \\cdot tonne:kg
 
 
     Parameters
@@ -608,7 +608,7 @@ def wastewater_n2o_indirect(P, protein, Fnrp, Fnon, Find, N, EF):
 
     .. math::
 
-        E = [(P \cdot protein \cdot F_{NRP} \cdot  F_{NON-CON} \cdot F_{IND-CON}) - N_{sludge}] \cdot EF \cdot conversion
+        E = [(P \\cdot protein \\cdot F_{NRP} \\cdot  F_{NON-CON} \\cdot F_{IND-CON}) - N_{sludge}] \\cdot EF \\cdot conversion
 
     Parameters
     ----------

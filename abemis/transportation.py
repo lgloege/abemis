@@ -6,7 +6,7 @@ def asif_framework(
     """ASIF framework for transportation emissions
 
     .. math::
-        E = A*S*I*F
+        E = A \\cdot S \\cdot I \\cdot F
 
     See Chapter 7 of the GHG Protocol for Cities ([1]_) for more details
 

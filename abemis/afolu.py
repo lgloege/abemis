@@ -1,8 +1,10 @@
 import numpy as np
 
+from .utils import convert_to_numpy
 from .constants import Conversions
 constants = Conversions()
 
+@convert_to_numpy
 def enteric_fermentation_ch4(N, EF):
     """CH4 emissions from enteric fermentation
 
@@ -34,7 +36,7 @@ def enteric_fermentation_ch4(N, EF):
     kg_to_tonnes = constants.kg_to_tonne.value
     return N * EF * kg_to_tonnes
 
-
+@convert_to_numpy
 def manure_management_ch4(N, EF):
     """CH4 emissions from manure management
 
@@ -67,6 +69,7 @@ def manure_management_ch4(N, EF):
     kg_to_tonnes = constants.kg_to_tonne.value
     return N * EF * kg_to_tonnes
 
+@convert_to_numpy
 def manure_management_n2o(N, NEX, MS, EF):
     """N2O emissions from manure management
 
@@ -108,7 +111,7 @@ def manure_management_n2o(N, NEX, MS, EF):
 
     return (N*NEX*MS) * EF * N_to_N2O * kg_to_tonnes
 
-
+@convert_to_numpy
 def nex(N, TAM):
     """Annual N excretion rates
 
@@ -145,6 +148,7 @@ def nex(N, TAM):
     return N * TAM * kg_to_tonne * days_in_year
 
 
+@convert_to_numpy
 def delta_c(FL, CL, GL, WL, SL, OL):
     """Changes in ecosystem C stocks
 
@@ -194,6 +198,8 @@ def delta_c(FL, CL, GL, WL, SL, OL):
     AFOLU = FL + CL + GL + WL + SL + OL
     return AFOLU * C_to_CO2
 
+
+@convert_to_numpy
 def biomass_burning(A, B, CF, EF):
     """emissions from biomass burning
 
@@ -241,6 +247,7 @@ def biomass_burning(A, B, CF, EF):
     g_to_kg = 0.001
     return A  * B * CF * EF * g_to_kg
 
+@convert_to_numpy
 def liming(M, EF):
     """CO2 emissions from liming
 
@@ -274,6 +281,7 @@ def liming(M, EF):
     C_to_CO2 = constants.C_to_CO2.value
     return M * EF * C_to_CO2
 
+@convert_to_numpy
 def urea_fertilization(M, EF):
     """CO2 emissions from urea application
 
@@ -306,6 +314,7 @@ def urea_fertilization(M, EF):
     C_to_CO2 = constants.C_to_CO2.value
     return M * EF * C_to_CO2
 
+@convert_to_numpy
 def manure_management_n2o_indirect(n, nex, ms, frac, ef):
     """ Indirect N2O emissions due to volatilization of N from manure management
 
@@ -343,7 +352,7 @@ def manure_management_n2o_indirect(n, nex, ms, frac, ef):
     N_to_N2O = constants.N_to_N2O.value
     return Nv * ef * kg_to_tonne * N_to_N2O
 
-
+@convert_to_numpy
 def rice_cultivation_ch4(EF, T, A):
     """CH4 emissions from rice cultivation
 

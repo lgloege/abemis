@@ -1,3 +1,8 @@
+import numpy as np
+
+from .utils import convert_to_numpy
+
+@convert_to_numpy
 def asif_framework(
     a: float,
     s: float,
@@ -43,3 +48,36 @@ def asif_framework(
     """
 
     return a * s * i * f
+
+
+@convert_to_numpy
+def fuel_sales(
+    quantity: float, ef: float) -> float:
+    """emissions from fuel sales
+
+    .. math::
+
+        E = \\sum_{fuel} Q_f \\cdot EF_f
+
+    Parameters
+    ----------
+    quantity : float
+        amount of fuel sold in the year
+    ef : float
+        emission factor for fuel
+
+    Returns
+    -------
+    float
+        transportation emissions (E)
+
+    References
+    ------
+    .. [1]   `2006 IPCC Guidelines for National Greenhouse Gas Inventories Volume 2 Energy: Chapter 3 Mobile Combustion <https://www.ipcc-nggip.iges.or.jp/public/2006gl/pdf/2_Volume2/V2_3_Ch3_Mobile_Combustion.pdf#page=25>`_
+
+    .. [2] Kennedy, Christopher, et al.
+        "Methodology for inventorying greenhouse gas emissions from global cities."
+        Energy policy 38.9 (2010): 4828-4837. doi: `10.1016/j.enpol.2009.08.050 <doi.org/10.1016/j.enpol.2009.08.050>`_
+    """
+
+    return np.sum(quantity * ef)

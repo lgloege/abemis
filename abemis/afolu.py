@@ -194,7 +194,7 @@ def delta_c(FL, CL, GL, WL, SL, OL):
     .. [2] `2019 Refinement to the 2006 IPCC Guidelines for National Greenhouse Gas Inventories, Chapter 2: generic methodologies applicable to multiple land-use categories
         <https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch02_Generic%20Methods.pdf#page=7>`_
     """
-    C_to_CO2 = 44/12
+    C_to_CO2 = constants.C_to_CO2.value
     AFOLU = FL + CL + GL + WL + SL + OL
     return AFOLU * C_to_CO2
 
@@ -244,7 +244,7 @@ def biomass_burning(A, B, CF, EF):
     """
     # TODO: put this in constants
     # this this converts EF so units are in tonnes in end
-    g_to_kg = 0.001
+    g_to_kg = constants.g_to_kg.value
     return A  * B * CF * EF * g_to_kg
 
 @convert_to_numpy

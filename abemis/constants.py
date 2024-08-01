@@ -19,6 +19,7 @@ class Conversions:
     year_to_days = Constant(value=365, long_name="days in a year", units="days/year")
     CH4_to_C = Constant(value=16/12, long_name="ratio CH4 to C", units="dimensionless")
     kg_to_Gg = Constant(value=10**-6, long_name="gigarams in a kilogram", units="dimensionless")
+    g_to_kg = Constant(value=0.001, long_name="grams in a kilogram", units="dimensionless")
 
 
 @dataclass(frozen=True)

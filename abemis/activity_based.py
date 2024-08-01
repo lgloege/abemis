@@ -1,5 +1,8 @@
 import numpy as np
 
+from .utils import convert_to_numpy
+
+@convert_to_numpy
 def general_formula(a, ef, c=0, r=0):
     """general activity-based emissions equation
 

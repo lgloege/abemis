@@ -1,8 +1,10 @@
 import numpy as np
 
+from .utils import convert_to_numpy
 from .constants import Conversions
 constants = Conversions()
 
+@convert_to_numpy
 def doc(A=0, B=0, C=0, D=0, E=0, F=0, *args, **kwargs):
     """Degradable organic carbon (DOC)
 
@@ -124,6 +126,7 @@ def management_level_to_mcf(management_level: str, *args, **kwargs):
     return mcf
 
 
+@convert_to_numpy
 def methane_generation_potential(mcf, doc, docf: float = 0.6, f: float = 0.5, *args, **kwargs):
     """Methane Generation Potential
 
@@ -215,7 +218,7 @@ def management_level_to_oxidation_factor(management_level: str, *args, **kwargs)
 
     return ox
 
-
+@convert_to_numpy
 def methane_commitment(msw, lo, frec, ox, *args, **kwargs):
     """ Methane commitment (MC) estimate for solid waste sent to landfill
 
@@ -328,7 +331,7 @@ def biological_treatment_ef(treatment, gas, wet_or_dry):
 
     return efs.get(treatment).get(gas).get(wet_or_dry)
 
-
+@convert_to_numpy
 def incineration_co2(m, wf, dm, cf, fcf, of):
     """non-biogenic CO2 emissions from incineration of waste
 
@@ -368,6 +371,7 @@ def incineration_co2(m, wf, dm, cf, fcf, of):
     return m * EF * C_to_CO2
 
 
+@convert_to_numpy
 def incineration_ch4(IW, EF):
     """CH4 emissions from incineration
 
@@ -404,6 +408,7 @@ def incineration_ch4(IW, EF):
     return IW * EF * g_to_tonnes
 
 
+@convert_to_numpy
 def incineration_n2o(IW, EF):
     """N2O emissions from incineration
 
@@ -440,6 +445,7 @@ def incineration_n2o(IW, EF):
     return IW * EF * g_to_tonnes
 
 
+@convert_to_numpy
 def fod(msw, lo, r, ox, k, inventory_year):
     """First Order Decay (FOD) model for solid waste CH4 emissions
 
@@ -478,19 +484,26 @@ def fod(msw, lo, r, ox, k, inventory_year):
     .. [1] `Equation 8.2 from GPC version 7 <https://ghgprotocol.org/sites/default/files/standards/GPC_Full_MASTER_RW_v7.pdf#page=99>`_
     .. [2] Based on `Equation 6 in CH4 emissions from solid waste disposal <https://www.ipcc-nggip.iges.or.jp/public/gp/bgp/5_1_CH4_Solid_Waste.pdf#page=5>`_
     """
-    msw_array = np.array(msw)
-    lo_array= np.array(lo)
-    num_years = len(msw_array)
+
+    if isinstance(msw, np.ndarray):
+         num_years = msw.size
+    elif isinstance(msw, (list, tuple)):
+        num_years = len(msw)
+    else:
+        msw_list = [msw]
+        num_years = len(msw_list)
+
     years = np.arange(inventory_year - num_years + 1, inventory_year + 1)
 
     exp_term = np.exp(-k * (inventory_year - years))
-    sum_term = np.sum(msw_array * lo_array * (1 - np.exp(-k)) * exp_term)
+    sum_term = np.sum(msw * lo * (1 - np.exp(-k)) * exp_term)
 
     emissions = (sum_term - r) * (1 - ox)
 
     return emissions
 
 
+@convert_to_numpy
 def tow(p, bod, i):
     """total organics in wastewater
 
@@ -528,6 +541,7 @@ def tow(p, bod, i):
     return p*bod*i*days_in_year
 
 
+@convert_to_numpy
 def ef_wasterwater_ch4(B, MCF, U, T):
     """EF wastewater
 
@@ -565,6 +579,7 @@ def ef_wasterwater_ch4(B, MCF, U, T):
     return B*MCF*U*T
 
 
+@convert_to_numpy
 def wastewater_ch4(tow, s, ef, r):
     """CH4 emissions from wastewater
 
@@ -602,7 +617,7 @@ def wastewater_ch4(tow, s, ef, r):
     return E_tonnes
 
 
-
+@convert_to_numpy
 def wastewater_n2o_indirect(P, protein, Fnrp, Fnon, Find, N, EF):
     """EF wastewater
 
@@ -646,6 +661,6 @@ def wastewater_n2o_indirect(P, protein, Fnrp, Fnon, Find, N, EF):
     ----------
     .. [1] `Equation 8.12 in GPC version 7 <https://ghgprotocol.org/sites/default/files/standards/GPC_Full_MASTER_RW_v7.pdf#page=109>`_
     """
-    N_to_N2O = 44/28
-    kg_to_tonnes = 0.001
+    N_to_N2O = constants.N_to_N2O.value
+    kg_to_tonnes = constants.kg_to_tonne.value
     return ( (P * protein * Fnrp * Fnon * Find) - N ) * EF * N_to_N2O * kg_to_tonnes

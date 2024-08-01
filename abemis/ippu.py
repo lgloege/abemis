@@ -1,6 +1,9 @@
 from .constants import Conversions
 constants = Conversions()
 
+from .utils import convert_to_numpy
+
+@convert_to_numpy
 def cement_production(M, EF):
     """CO2 emissions from cement production
 
@@ -32,6 +35,7 @@ def cement_production(M, EF):
     return M*EF
 
 
+convert_to_numpy
 def lime_production(M, EF):
     """CO2 emissions from lime production
 
@@ -64,6 +68,7 @@ def lime_production(M, EF):
     return M*EF
 
 
+convert_to_numpy
 def glass_production(M, EF, CR):
     """CO2 emissions from glass production
 
@@ -99,6 +104,7 @@ def glass_production(M, EF, CR):
     return M*EF*(1-CR)
 
 
+convert_to_numpy
 def non_energy_product_use(NEU, CC, ODU):
     """CO2 emissions from non-energy product use
 

@@ -1,5 +1,8 @@
 import numpy as np
 
+from .utils import convert_to_numpy
+
+@convert_to_numpy
 def combustion(a, ef):
     """greenhouse gas emissions from stationary combustion
 

@@ -18,6 +18,9 @@ However, sometimes the equation is more complex,
 wich activities and emission factors requring additional information.
 This is where ``abemis`` shines.
 
+Abemis is based on the `GHG protocol for cities <https://ghgprotocol.org/ghg-protocol-cities>`_
+and `2006 IPCC Guidelines for National Greenhouse Gas Inventories <https://www.ipcc-nggip.iges.or.jp/public/2006gl/>`_.
+
 .. note::
 
    Contributions are encouraged as this project is a work in progress.

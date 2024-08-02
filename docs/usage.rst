@@ -343,7 +343,7 @@ Urea Application
 
 .. math::
 
-    CO2 = \sum_t (M_t * EF_t) * CO2:C
+    CO2 = \sum_t (M_t \cdot EF_t) \cdot CO2:C
 
 where M is the mass of urea and EF is the emission factor
 

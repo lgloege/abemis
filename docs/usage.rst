@@ -329,7 +329,7 @@ Liming
 
 .. math::
 
-    CO2 = \sum_t (M_t * EF_t) * CO2:C
+    CO2 = \sum_t (M_t * EF_t) \cdot CO2:C
 
 Where M is the amount of limestone or dolomite, EF is the emission factor, where t is the limestone or dolomite
 

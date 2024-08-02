@@ -77,7 +77,7 @@ def doc(A=0, B=0, C=0, D=0, E=0, F=0, *args, **kwargs):
     return doc
 
 
-def management_level_to_mcf(management_level: str, *args, **kwargs):
+def _management_level_to_mcf(management_level: str, *args, **kwargs):
     """methane correction factor (MCF) from management level
 
     See Equation 8.4 in [1]_
@@ -181,7 +181,7 @@ def methane_generation_potential(mcf, doc, docf: float = 0.6, f: float = 0.5, *a
     return mcf * doc * docf * f * CH4_TO_C
 
 
-def management_level_to_oxidation_factor(management_level: str, *args, **kwargs):
+def _management_level_to_oxidation_factor(management_level: str, *args, **kwargs):
     """oxidation factor from management level
 
     Parameters

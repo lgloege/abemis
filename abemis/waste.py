@@ -273,7 +273,7 @@ def methane_commitment(msw, lo, frec, ox, *args, **kwargs):
     return msw * lo * (1 - frec) * (1 - ox)
 
 
-def biological_treatment_ef(treatment, gas, wet_or_dry):
+def _biological_treatment_ef(treatment, gas, wet_or_dry):
     """biological treatment emissions factor
 
     Parameters

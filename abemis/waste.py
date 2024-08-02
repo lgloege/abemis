@@ -542,7 +542,7 @@ def tow(p, bod, i):
 
 
 @convert_to_numpy
-def ef_wasterwater_ch4(B, MCF, U, T):
+def wasterwater_ch4_ef(B, MCF, U, T):
     """EF wastewater
 
     .. math::

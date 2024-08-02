@@ -1,18 +1,22 @@
+"""waste activity-based emissions equations."""
+
 import numpy as np
 
 from .utils import convert_to_numpy
 from .constants import Conversions
+
 constants = Conversions()
+
 
 @convert_to_numpy
 def doc(A=0, B=0, C=0, D=0, E=0, F=0, *args, **kwargs):
-    """Degradable organic carbon (DOC)
+    r"""Degradable organic carbon (DOC).
 
     Calculates total DOC from the fractional breakdown of municiple solid waste
     and its DOC content
 
     .. math::
-        DOC = (0.15 * A) + (0.2 x B) + (0.4 * C) + (0.43 * D) + (0.24 * E) + (0.15 * F)
+        DOC = (0.15 \cdot A) + (0.2 \cdot B) + (0.4 \cdot C) + (0.43 \cdot D) + (0.24 \cdot E) + (0.15 \cdot F)
 
     Parameters
     ----------
@@ -51,8 +55,10 @@ def doc(A=0, B=0, C=0, D=0, E=0, F=0, *args, **kwargs):
     * Followed Equation 8.1 in GPC version 7 [1]_
     * Equation adapted from Equation 5.4 in [2]_
     * Fractions from table 2.4 in [3]_
-    """
-    assert all(0 <= v <= 1 for v in [A, B, C, D, E, F]), "All fractions should be between 0 and 1"
+    """  # noqa: E501
+    assert all(
+        0 <= v <= 1 for v in [A, B, C, D, E, F]
+    ), "All fractions should be between 0 and 1"
 
     # DOC content in wet waste (table 2.4 in "2006 IPCC Guidelines ...")
     # TODO: this could be moved to constants
@@ -62,7 +68,7 @@ def doc(A=0, B=0, C=0, D=0, E=0, F=0, *args, **kwargs):
         "paper": 0.4,
         "wood": 0.43,
         "textiles": 0.24,
-        "industrial": 0.15, # unsure where GPC gets this value
+        "industrial": 0.15,  # unsure where GPC gets this value
     }
 
     doc = (
@@ -78,7 +84,7 @@ def doc(A=0, B=0, C=0, D=0, E=0, F=0, *args, **kwargs):
 
 
 def _management_level_to_mcf(management_level: str, *args, **kwargs):
-    """methane correction factor (MCF) from management level
+    """Methane correction factor (MCF) from management level.
 
     See Equation 8.4 in [1]_
 
@@ -108,15 +114,15 @@ def _management_level_to_mcf(management_level: str, *args, **kwargs):
         Local Governments for Sustainability. (2014).
         Chapter 8: Waste. In `Global Protocol for Community-Scale Greenhouse Gas Emission Inventories <https://ghgprotocol.org/sites/default/files/standards/GPC_Full_MASTER_RW_v7.pdf#page=100>`__.
         WRI, C40, and ICLEI.
-    """
+    """  # noqa: E501
     dic = {
-        'managed': 1,
-        'managed_well': 0.5,
-        'managed_poorly': 0.7,
-        'unmanaged_more5m': 0.8,
-        'unmanaged_less5m': 0.4,
-        'uncategorized': 0.6
-        }
+        "managed": 1,
+        "managed_well": 0.5,
+        "managed_poorly": 0.7,
+        "unmanaged_more5m": 0.8,
+        "unmanaged_less5m": 0.4,
+        "uncategorized": 0.6,
+    }
 
     mcf = dic.get(management_level.lower())
 
@@ -127,14 +133,16 @@ def _management_level_to_mcf(management_level: str, *args, **kwargs):
 
 
 @convert_to_numpy
-def methane_generation_potential(mcf, doc, docf: float = 0.6, f: float = 0.5, *args, **kwargs):
-    """Methane Generation Potential
+def methane_generation_potential(
+    mcf, doc, docf: float = 0.6, f: float = 0.5, *args, **kwargs
+):
+    r"""Methane Generation Potential.
 
     specifies the amount of methane generated per ton of solid waste
 
     .. math::
 
-        L_o = MCF * DOC * DOC_F * F * CH4:C
+        L_o = MCF \cdot DOC \cdot DOC_F \cdot F \cdot CH4:C
 
     Parameters
     ----------
@@ -176,13 +184,13 @@ def methane_generation_potential(mcf, doc, docf: float = 0.6, f: float = 0.5, *a
     References
     ----------
     .. [1] Equation 8.4 in `GPC version 7 <https://ghgprotocol.org/sites/default/files/standards/GPC_Full_MASTER_RW_v7.pdf#page=100>`_
-    """
+    """  # noqa: E501
     CH4_TO_C = constants.CH4_to_C.value
     return mcf * doc * docf * f * CH4_TO_C
 
 
 def _management_level_to_oxidation_factor(management_level: str, *args, **kwargs):
-    """oxidation factor from management level
+    """Oxidation factor from management level.
 
     Parameters
     ----------
@@ -201,15 +209,15 @@ def _management_level_to_oxidation_factor(management_level: str, *args, **kwargs
     float
         oxidation factor
         Units: dimensionless
-    """
+    """  # noqa: E501
     dic = {
-        'managed': 0.1,
-        'managed_well': 0.1,
-        'managed_poorly': 0.1,
-        'unmanaged_more5m': 0,
-        'unmanaged_less5m': 0,
-        'uncategorized': 0
-        }
+        "managed": 0.1,
+        "managed_well": 0.1,
+        "managed_poorly": 0.1,
+        "unmanaged_more5m": 0,
+        "unmanaged_less5m": 0,
+        "uncategorized": 0,
+    }
 
     ox = dic.get(management_level.lower())
 
@@ -218,18 +226,19 @@ def _management_level_to_oxidation_factor(management_level: str, *args, **kwargs
 
     return ox
 
+
 @convert_to_numpy
 def methane_commitment(msw, lo, frec, ox, *args, **kwargs):
-    """ Methane commitment (MC) estimate for solid waste sent to landfill
+    r"""Methane commitment (MC) estimate for solid waste sent to landfill.
 
     MC assigns landfill emissions based on waste disposed in a given year.
-    It takes a lifecycle and mass-balance approach and calculates landfill emissions
-    based on the amount of waste disposed in a given year,
+    It takes a lifecycle and mass-balance approach and calculates landfill
+    emissions based on the amount of waste disposed in a given year,
     regardless of when the emissions actually occur.
     A portion of emissions are released every year after the waste is disposed.
 
     .. math::
-        CH_4 = MSW * L_o * (1 - f_{ref}) * (1 - OX)
+        CH_4 = MSW \cdot L_o \cdot (1 - f_{ref}) \cdot (1 - OX)
 
     Parameters
     ----------
@@ -242,7 +251,8 @@ def methane_commitment(msw, lo, frec, ox, *args, **kwargs):
         Units: dimensionless
 
     frec: float
-        Fraction of methane recovered at the landfill (flared or energy recovery)
+        Fraction of methane recovered at the landfill
+        (flared or energy recovery)
         Units: dimensionless
 
     ox: float
@@ -265,8 +275,7 @@ def methane_commitment(msw, lo, frec, ox, *args, **kwargs):
     References
     ----------
     .. [1] `Equation 8.3 in GPC version 7 <https://ghgprotocol.org/sites/default/files/standards/GPC_Full_MASTER_RW_v7.pdf#page=99>`_
-    """
-
+    """  # noqa: E501
     assert 0 <= frec <= 1, "frec must be between 0 and 1"
     assert 0 <= ox <= 1, "oxidation factor (ox) must be between 0 and 1"
 
@@ -274,7 +283,7 @@ def methane_commitment(msw, lo, frec, ox, *args, **kwargs):
 
 
 def _biological_treatment_ef(treatment, gas, wet_or_dry):
-    """biological treatment emissions factor
+    """Biological treatment emissions factor.
 
     Parameters
     ----------
@@ -297,49 +306,42 @@ def _biological_treatment_ef(treatment, gas, wet_or_dry):
     ----------
     .. [1] `Table 8.3 in GPC version 7 <https://ghgprotocol.org/sites/default/files/standards/GPC_Full_MASTER_RW_v7.pdf#page=101>`_
     .. [2] original source: 2006 IPCC Guidelines for National Greenhouse Gas Inventories, Volume 5, Chapter 4: Biological Treatment of Solid Waste
-    """
+    """  # noqa: E501
     treatment = treatment.lower()
     gas = gas.lower()
     wet_or_dry = wet_or_dry.lower()
 
-    assert treatment in ["composting", "anaerobic_digestion"], "treatment must be either composting or anaerobic_digestion"
+    assert treatment in [
+        "composting",
+        "anaerobic_digestion",
+    ], "treatment must be either composting or anaerobic_digestion"
     assert gas in ["ch4", "n2o"], "gas must be either ch4 or n2o"
     assert wet_or_dry in ["wet", "dry"], "wet_or_dry must be either wet or dry"
 
     efs = {
-        "composting": {
-            "ch4": {
-                "dry": 10,
-                "wet": 4
-                },
-            "n2o": {
-                "dry": 0.6,
-                "wet": 0.24
-                }
-        },
-        "anaerobic_digestion":{
+        "composting": {"ch4": {"dry": 10, "wet": 4}, "n2o": {"dry": 0.6, "wet": 0.24}},
+        "anaerobic_digestion": {
             "ch4": {
                 "dry": 2,
                 "wet": 0.8,
-                },
-            "n2o": {
-                "dry": None,
-                "wet": None
-                }
-        }
+            },
+            "n2o": {"dry": None, "wet": None},
+        },
     }
 
     return efs.get(treatment).get(gas).get(wet_or_dry)
 
+
 @convert_to_numpy
 def incineration_co2(m, wf, dm, cf, fcf, of):
-    """non-biogenic CO2 emissions from incineration of waste
+    r"""non-biogenic CO2 emissions from incineration of waste.
 
     .. math::
 
-        E = m \\cdot \\sum_i (WF_i \\cdot dm_i \\cdot CF_i \\cdot FCF_i \\cdot OF_i) \\cdot CO2:C
+        E = m \cdot \sum_i (WF_i \cdot dm_i \cdot CF_i \cdot FCF_i \cdot OF_i) \cdot CO2:C
 
-    where i is the type of the Solid Waste incinerated such as paper/cardboard, textile, food waste, etc.
+    where i is the type of the Solid Waste incinerated such as paper/cardboard,
+    textile, food waste, etc.
 
     Parameters
     ----------
@@ -362,24 +364,25 @@ def incineration_co2(m, wf, dm, cf, fcf, of):
         Total CO2 emissions from incineration of solid waste in tonnes
 
     References
-    ---------
+    ----------
     .. [1] `Equation 8.6 in GPC version 1 <https://ghgprotocol.org/sites/default/files/standards/GPC_Full_MASTER_RW_v7.pdf#page=102>`_
-    """
+    """  # noqa: E501
     # TODO: add assertion that sum(WF) == 1
-    EF = wf * dm  * cf * fcf * of
+    EF = wf * dm * cf * fcf * of
     C_to_CO2 = constants.C_to_CO2.value
     return m * EF * C_to_CO2
 
 
 @convert_to_numpy
 def incineration_ch4(IW, EF):
-    """CH4 emissions from incineration
+    r"""CH4 emissions from incineration.
 
     .. math::
 
-        E = \\sum_i IW_i \\cdot EF_i
+        E = \sum_i IW_i \cdot EF_i
 
-    where i is the category or type of waste incinerated/open-burned, specified as follows:
+    where i is the category or type of waste incinerated/open-burned,
+    specified as follows:
 
     * MSW: municipal solid waste
     * ISW: industrial solid waste
@@ -396,27 +399,28 @@ def incineration_ch4(IW, EF):
        Aggregate CH4 emission factor, g CH4/ton of waste type i
 
     Returns
-    --------
+    -------
     float
        CH4 emissions in inventory year, in tonnes
 
     References
     ----------
     .. [1] `Equation 8.7 in GPC version 7 <https://ghgprotocol.org/sites/default/files/standards/GPC_Full_MASTER_RW_v7.pdf#page=103>`_
-    """
+    """  # noqa: E501
     g_to_tonnes = constants.g_to_tonne.value
     return IW * EF * g_to_tonnes
 
 
 @convert_to_numpy
 def incineration_n2o(IW, EF):
-    """N2O emissions from incineration
+    r"""N2O emissions from incineration.
 
     .. math::
 
-        E = \\sum_i IW_i \\cdot EF_i
+        E = \sum_i IW_i \cdot EF_i
 
-    where i is the category or type of waste incinerated/open-burned, specified as follows:
+    where i is the category or type of waste incinerated/open-burned,
+    specified as follows:
 
     * MSW: municipal solid waste
     * ISW: industrial solid waste
@@ -433,30 +437,31 @@ def incineration_n2o(IW, EF):
        Aggregate N2O emission factor, g CH4/ton of waste type i
 
     Returns
-    --------
+    -------
     float
        N2O emissions in inventory year, in tonnes
 
     References
     ----------
     .. [1] `Equation 8.8 in GPC version 7 <https://ghgprotocol.org/sites/default/files/standards/GPC_Full_MASTER_RW_v7.pdf#page=105>`_
-    """
+    """  # noqa: E501
     g_to_tonnes = constants.g_to_tonne.value
     return IW * EF * g_to_tonnes
 
 
 @convert_to_numpy
 def fod(msw, lo, r, ox, k, inventory_year):
-    """First Order Decay (FOD) model for solid waste CH4 emissions
+    r"""First Order Decay (FOD) model for solid waste CH4 emissions.
 
     .. math::
 
-        E =  \\bigg\\{ \\sum_x \\big[ MSW_x \\cdot Lo_x \\cdot (1 - \\exp^{-k}) \\cdot \\exp^{-k(t-x)} \\big]  - R(t) \\bigg\\}  \\cdot (1-OX)
+        E =  \bigg\{ \sum_x \big[ MSW_x \cdot Lo_x \cdot (1 - \exp^{-k}) \cdot \exp^{-k(t-x)} \big]  - R(t) \bigg\}  \cdot (1-OX)
 
     Parameters
     ----------
     msw : float
-        Total municipal solid waste disposed at solid waste disposal site in year x in tonnes
+        Total municipal solid waste disposed at solid waste disposal site
+        in year x in tonnes
     lo : float
         Methane generation potential
     r : float
@@ -483,10 +488,9 @@ def fod(msw, lo, r, ox, k, inventory_year):
     ----------
     .. [1] `Equation 8.2 from GPC version 7 <https://ghgprotocol.org/sites/default/files/standards/GPC_Full_MASTER_RW_v7.pdf#page=99>`_
     .. [2] Based on `Equation 6 in CH4 emissions from solid waste disposal <https://www.ipcc-nggip.iges.or.jp/public/gp/bgp/5_1_CH4_Solid_Waste.pdf#page=5>`_
-    """
-
+    """  # noqa: E501
     if isinstance(msw, np.ndarray):
-         num_years = msw.size
+        num_years = msw.size
     elif isinstance(msw, (list, tuple)):
         num_years = len(msw)
     else:
@@ -505,11 +509,11 @@ def fod(msw, lo, r, ox, k, inventory_year):
 
 @convert_to_numpy
 def tow(p, bod, i):
-    """total organics in wastewater
+    r"""Total organics in wastewater.
 
     .. math::
 
-        TOW = P \\cdot BOD \\cdot I \\cdot 365
+        TOW = P \cdot BOD \cdot I \cdot 365
 
     Parameters
     ----------
@@ -522,34 +526,36 @@ def tow(p, bod, i):
     i : float
         Correction factor for additional industrial BOD discharged into sewers
 
-        In the absence of expert judgment, GPC suggests the following default values :
+        In the absence of expert judgment,
+        GPC suggests the following default values:
 
         * 1.25 for collected wastewater
         * 1.00 for uncollected
 
     Returns
-    --------
+    -------
     float
        For domestic wastewater: total organics in wastewater in inventory year,
        units: kg BOD/yr
 
     References
-    ---------
+    ----------
     .. [1] `Equation 8.11 in GPC version 7 <https://ghgprotocol.org/sites/default/files/standards/GPC_Full_MASTER_RW_v7.pdf#page=108>`_
-    """
+    """  # noqa: E501
     days_in_year = constants.year_to_days
-    return p*bod*i*days_in_year
+    return p * bod * i * days_in_year
 
 
 @convert_to_numpy
 def wasterwater_ch4_ef(B, MCF, U, T):
-    """EF wastewater
+    r"""Wastewater CH4 emissions factor.
 
     .. math::
 
-        EF = B \\cdot MCF_j \\cdot U_i \\cdot T_{i,j}
+        EF = B \cdot MCF_j \cdot U_i \cdot T_{i,j}
 
-    where i is the income group and j is the treatment/discharge pathway or system.
+    where i is the income group and j is the treatment/discharge pathway
+    or system.
 
     Parameters
     ----------
@@ -565,27 +571,28 @@ def wasterwater_ch4_ef(B, MCF, U, T):
     U : float
         Fraction of population in income group i in inventory year
     T : float
-        Degree of utilization (ratio) of treatment/discharge pathway or system, j, for each income group fraction i in inventory year
+        Degree of utilization (ratio) of treatment/discharge pathway or system,
+        j, for each income group fraction i in inventory year
 
     Returns
-    --------
+    -------
     float
        Emission factor for each treatment and handling system
 
     References
-    ---------
+    ----------
     .. [1] `Equation 8.11 in GPC version 7 <https://ghgprotocol.org/sites/default/files/standards/GPC_Full_MASTER_RW_v7.pdf#page=108>`_
-    """
-    return B*MCF*U*T
+    """  # noqa: E501
+    return B * MCF * U * T
 
 
 @convert_to_numpy
 def wastewater_ch4(tow, s, ef, r):
-    """CH4 emissions from wastewater
+    r"""CH4 emissions from wastewater.
 
     .. math::
 
-        E = [(TOW - S) \\cdot EF - R] \\cdot tonne:kg
+        E = [(TOW - S) \cdot EF - R] \cdot tonne:kg
 
 
     Parameters
@@ -602,7 +609,7 @@ def wastewater_ch4(tow, s, ef, r):
         Amount of CH4 recovered in inventory year, kg CH4/yr
 
     Returns
-    --------
+    -------
     float
        Total CH4 emissions
        units: metric tonnes
@@ -610,20 +617,20 @@ def wastewater_ch4(tow, s, ef, r):
     References
     ----------
     .. [1] `Equation 8.9 in GPC version 7 <https://ghgprotocol.org/sites/default/files/standards/GPC_Full_MASTER_RW_v7.pdf#page=107>`_
-    """
+    """  # noqa: E501
     kg_to_tonnes = constants.kg_to_tonne.value
-    E_kg = (tow - s)*ef - r
-    E_tonnes =  E_kg * kg_to_tonnes
+    E_kg = (tow - s) * ef - r
+    E_tonnes = E_kg * kg_to_tonnes
     return E_tonnes
 
 
 @convert_to_numpy
 def wastewater_n2o_indirect(P, protein, Fnrp, Fnon, Find, N, EF):
-    """EF wastewater
+    r"""Indirect N2O emissions from wastewater.
 
     .. math::
 
-        E = [(P \\cdot protein \\cdot F_{NRP} \\cdot  F_{NON-CON} \\cdot F_{IND-CON}) - N_{sludge}] \\cdot EF \\cdot conversion
+        E = [(P \cdot protein \cdot F_{NRP} \cdot  F_{NON-CON} \cdot F_{IND-CON}) - N_{sludge}] \cdot EF \cdot conversion
 
     Parameters
     ----------
@@ -633,12 +640,14 @@ def wastewater_n2o_indirect(P, protein, Fnrp, Fnon, Find, N, EF):
         Annual per capita protein consumption, kg/person/yr
     F_nrp : float
         Factor to adjust for non-consumed protein
-        1.1 for countries with no garbage disposals, 1.4 for countries with garbage disposals
+        1.1 for countries with no garbage disposals,
+        1.4 for countries with garbage disposals
     F_non-con : float
         Fraction of nitrogen in protein
         default: 0.16, kg N/kg protein
     F_ind-con : float
-        Factor for industrial and commercial co-discharged protein into the sewer system
+        Factor for industrial and commercial co-discharged protein into
+        the sewer system
         deafult:
 
         * 1.25 Centralized systems
@@ -653,14 +662,14 @@ def wastewater_n2o_indirect(P, protein, Fnrp, Fnon, Find, N, EF):
         units = kg N2O-N per kg N2O
 
     Returns
-    --------
+    -------
     float
        Emission factor for each treatment and handling system
 
     References
     ----------
     .. [1] `Equation 8.12 in GPC version 7 <https://ghgprotocol.org/sites/default/files/standards/GPC_Full_MASTER_RW_v7.pdf#page=109>`_
-    """
+    """  # noqa: E501
     N_to_N2O = constants.N_to_N2O.value
     kg_to_tonnes = constants.kg_to_tonne.value
-    return ( (P * protein * Fnrp * Fnon * Find) - N ) * EF * N_to_N2O * kg_to_tonnes
+    return ((P * protein * Fnrp * Fnon * Find) - N) * EF * N_to_N2O * kg_to_tonnes

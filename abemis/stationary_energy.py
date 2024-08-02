@@ -1,14 +1,17 @@
+"""stationary energy equations."""
+
 import numpy as np
 
 from .utils import convert_to_numpy
 
+
 @convert_to_numpy
 def combustion(a, ef):
-    """greenhouse gas emissions from stationary combustion
+    r"""Greenhouse gas emissions from stationary combustion.
 
     .. math::
 
-        E = \\sum_{fuel} A_{fuel} \\cdot EF_{fuel}
+        E = \sum_{fuel} A_{fuel} \cdot EF_{fuel}
 
     where fuel is coal, oil, natural gas, etc.
 
@@ -26,5 +29,5 @@ def combustion(a, ef):
     -------
     float
         emissions of fuel by type
-    """
+    """  # noqa: E501
     return np.sum(a * ef)

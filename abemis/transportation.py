@@ -1,17 +1,16 @@
+"""Transportation equations."""
+
 import numpy as np
 
 from .utils import convert_to_numpy
 
+
 @convert_to_numpy
-def asif_framework(
-    a: float,
-    s: float,
-    i: float,
-    f: float) -> float:
-    """ASIF framework for transportation emissions
+def asif_framework(a: float, s: float, i: float, f: float) -> float:
+    r"""ASIF framework for transportation emissions.
 
     .. math::
-        E = A \\cdot S \\cdot I \\cdot F
+        E = A \cdot S \cdot I \cdot F
 
     See Chapter 7 of the GHG Protocol for Cities ([1]_) for more details
 
@@ -33,7 +32,7 @@ def asif_framework(
         transportation emissions (E)
 
     References
-    ------
+    ----------
     .. [1] World Resources Institute, C40 Cities Climate Leadership Group, and ICLEI -
         Local Governments for Sustainability. (2014).
         Chapter 7: Transportation. In `Global Protocol for Community-Scale Greenhouse Gas Emission Inventories <https://ghgprotocol.org/sites/default/files/standards/GPC_Full_MASTER_RW_v7.pdf#page=80>`__.
@@ -45,19 +44,17 @@ def asif_framework(
     .. [3] Schipper, L., Fabian, H., & Leather, J.
         Transport and Carbon Dioxide Emissions: Forecasts, Options Analysis, and Evaluation. 2009.
         https://www.adb.org/publications/transport-and-carbon-dioxide-emissions-forecasts-options-analysis-and-evaluation
-    """
-
+    """  # noqa: E501
     return a * s * i * f
 
 
 @convert_to_numpy
-def fuel_sales(
-    quantity: float, ef: float) -> float:
-    """emissions from fuel sales
+def fuel_sales(quantity: float, ef: float) -> float:
+    r"""Emissions from fuel sales.
 
     .. math::
 
-        E = \\sum_{fuel} Q_f \\cdot EF_f
+        E = \sum_{fuel} Q_f \cdot EF_f
 
     Parameters
     ----------
@@ -72,12 +69,11 @@ def fuel_sales(
         transportation emissions (E)
 
     References
-    ------
-    .. [1]   `2006 IPCC Guidelines for National Greenhouse Gas Inventories Volume 2 Energy: Chapter 3 Mobile Combustion <https://www.ipcc-nggip.iges.or.jp/public/2006gl/pdf/2_Volume2/V2_3_Ch3_Mobile_Combustion.pdf#page=25>`_
+    ----------
+    .. [1] `2006 IPCC Guidelines for National Greenhouse Gas Inventories Volume 2 Energy: Chapter 3 Mobile Combustion <https://www.ipcc-nggip.iges.or.jp/public/2006gl/pdf/2_Volume2/V2_3_Ch3_Mobile_Combustion.pdf#page=25>`_
 
     .. [2] Kennedy, Christopher, et al.
         "Methodology for inventorying greenhouse gas emissions from global cities."
         Energy policy 38.9 (2010): 4828-4837. doi: `10.1016/j.enpol.2009.08.050 <doi.org/10.1016/j.enpol.2009.08.050>`_
-    """
-
+    """  # noqa: E501
     return np.sum(quantity * ef)

@@ -1,14 +1,17 @@
+"""General activity-based equations."""
+
 import numpy as np
 
 from .utils import convert_to_numpy
 
+
 @convert_to_numpy
 def general_formula(a, ef, c=0, r=0):
-    """general activity-based emissions equation
+    r"""General activity-based emissions equation.
 
     ... math::
 
-        E = \\sum_i (A_i \\cdot EF_i) \\cdot C - R
+        E = \sum_i (A_i \cdot EF_i) \cdot C - R
 
     where i is some category.
 
@@ -27,6 +30,5 @@ def general_formula(a, ef, c=0, r=0):
     -------
     float
         emissions
-    """
-
+    """  # noqa: E501
     return np.sum(a * ef) * c - r

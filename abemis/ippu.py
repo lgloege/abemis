@@ -1,15 +1,19 @@
+"""IPPU equations."""
+
 from .constants import Conversions
-constants = Conversions()
 
 from .utils import convert_to_numpy
 
+constants = Conversions()
+
+
 @convert_to_numpy
 def cement_production(M, EF):
-    """CO2 emissions from cement production
+    r"""CO2 emissions from cement production.
 
     .. math::
 
-        E = M \\cdot EF
+        E = M \cdot EF
 
     Parameters
     ----------
@@ -22,26 +26,29 @@ def cement_production(M, EF):
         units: CO2 / tonne clinker
 
     Returns
-    --------
+    -------
     float
         CO2 emissions in tonnes
 
     References
-    -----
+    ----------
     .. [1] `Equation 9.2 in GPC version 7 <https://ghgprotocol.org/sites/default/files/standards/GPC_Full_MASTER_RW_v7.pdf#page=114>`_
-    """
-    #  Link to default emission factor calculation:
-    # 2.2.1.2 of Page 2.11 from Chapter 2 of Volume 3 of 2006 IPCC Guidelines for National Greenhouse Gas Inventories
-    return M*EF
+    """  # noqa: E501
+    # Link to default emission factor calculation:
+    # 2.2.1.2 of Page 2.11 from Chapter 2 of Volume 3
+    # 2006 IPCC Guidelines for National Greenhouse Gas Inventories
+    return M * EF
 
 
 convert_to_numpy
+
+
 def lime_production(M, EF):
-    """CO2 emissions from lime production
+    r"""CO2 emissions from lime production.
 
     .. math::
 
-        E = \\sum_i M_i \\cdot EF_i
+        E = \sum_i M_i \cdot EF_i
 
     where i is the type of lime
 
@@ -55,26 +62,29 @@ def lime_production(M, EF):
         units: CO2 / tonne lime
 
     Returns
-    --------
+    -------
     float
         CO2 emissions in tonnes
 
     References
     ----------
     .. [1] `Equation 9.3 in GPC version 7 <https://ghgprotocol.org/sites/default/files/standards/GPC_Full_MASTER_RW_v7.pdf#page=114>`_
-    """
-    #   Link to default emission factor calculation:
-    #  Table 2.4 of Page 2.22 from Chapter 2 of Volume 3 of 2006 IPCC Guidelines for National Greenhouse Gas Inventories
-    return M*EF
+    """  # noqa: E501
+    # Link to default emission factor calculation:
+    # Table 2.4 of Page 2.22 from Chapter 2 of Volume 3
+    # 2006 IPCC Guidelines for National Greenhouse Gas Inventories
+    return M * EF
 
 
 convert_to_numpy
+
+
 def glass_production(M, EF, CR):
-    """CO2 emissions from glass production
+    r"""CO2 emissions from glass production.
 
     .. math::
 
-        E = \\sum_i M_i \\cdot EF_i \\cdot (1 - CR_i)
+        E = \sum_i M_i \cdot EF_i \cdot (1 - CR_i)
 
     where i is the type of glass
 
@@ -91,26 +101,29 @@ def glass_production(M, EF, CR):
         Cullet ratio is the fraction of the furnace charge represented by cullet.
 
     Returns
-    --------
+    -------
     float
         CO2 emissions in tonnes
 
     References
     ----------
     .. [1] `Equation 9.4 in GPC version 7 <https://ghgprotocol.org/sites/default/files/standards/GPC_Full_MASTER_RW_v7.pdf#page=114>`_
-    """
+    """  # noqa: E501
     # link to default emission factor calculation
-    # Table 2.6 of Page 2.30 from Chapter 2 of Volume 3 of 2006 IPCC Guidelines for National Greenhouse Gas Inventories
-    return M*EF*(1-CR)
+    # Table 2.6 of Page 2.30 from Chapter 2 of Volume 3
+    # 2006 IPCC Guidelines for National Greenhouse Gas Inventories
+    return M * EF * (1 - CR)
 
 
 convert_to_numpy
+
+
 def non_energy_product_use(NEU, CC, ODU):
-    """CO2 emissions from non-energy product use
+    r"""CO2 emissions from non-energy product use.
 
     .. math::
 
-        E = \\sum_i (NEU_i \\cdot CC_i \\cdot ODU_i) \\cdot CO2:C
+        E = \sum_i (NEU_i \cdot CC_i \cdot ODU_i) \cdot CO2:C
 
 
     Parameters
@@ -126,7 +139,7 @@ def non_energy_product_use(NEU, CC, ODU):
         units: dimensionless
 
     Returns
-    --------
+    -------
     float
         CO2 emissions
         units: tonnes
@@ -134,8 +147,10 @@ def non_energy_product_use(NEU, CC, ODU):
     References
     ----------
     .. [1] `Equation 9.5 in GPC version 7 <https://ghgprotocol.org/sites/default/files/standards/GPC_Full_MASTER_RW_v7.pdf#page=118>`_
-    """
-    # Source: Equation adapted from 2006 IPCC Guidelines for National Greenhouse Gas Inventories Volume 3 Industrial Processes and Product Use available at:
+    """  # noqa: E501
+    # Source: Equation adapted from
+    # 2006 IPCC Guidelines for National Greenhouse Gas Inventories
+    # Volume 3 Industrial Processes and Product Use available at:
     # www.ipcc-nggip.iges.or.jp/public/2006gl/vol3.html
     CO2_to_C = constants.C_to_CO2.value
-    return NEU*CC*ODU * CO2_to_C
+    return NEU * CC * ODU * CO2_to_C

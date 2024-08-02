@@ -91,7 +91,7 @@ Preparing Pull Requests
 
 #. Finally, submit a pull request through the GitHub website using this data::
 
-    head-fork: YOUR_GITHUB_USERNAME/pyseaflux
+    head-fork: YOUR_GITHUB_USERNAME/abemis
     compare: your-branch-name
 
     base-fork: lgloege/abemis

@@ -34,3 +34,7 @@ packages = ["abemis"]
 [tool.setuptools_scm]
 fallback_version = "9999"
 
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E501"]
+docstring-convention = "numpy"

@@ -12,7 +12,7 @@ of an *activity* (:math:`A`) by an *emission factor* (:math:`EF`)
 
 .. math::
 
-   E = A * EF
+   E = A \cdot EF
 
 However, sometimes the equation is more complex,
 wich activities and emission factors requring additional information.

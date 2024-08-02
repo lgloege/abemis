@@ -105,7 +105,7 @@ regardless of when the emissions actually occur.
 A portion of emissions are released every year after the waste is disposed.
 
 .. math::
-    CH_4 = MSW * L_o * (1 - f_{ref}) * (1 - OX)
+    CH_4 = MSW \cdot L_o \cdot (1 - f_{ref}) \cdot (1 - OX)
 
 where MSW is the mass of municiple solid waste in metric tonnes, Lo is the dimensionless methane generation potential,
 frec is the fractional of methane recoved at the landfill, and OX is the oxidation factor.

@@ -3,10 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-ABEmis documentation
+ABEMIS Documentation
 ====================
 
-``ABEmis`` is Python package to calculate activity-based emissions.
+``abemis`` is Python package to calculate activity-based emissions.
 Activity-based emissions (:math:`E`) are typically caculated as the product of
 of an *activity* (:math:`A`) by an *emission factor* (:math:`EF`)
 
@@ -16,7 +16,7 @@ of an *activity* (:math:`A`) by an *emission factor* (:math:`EF`)
 
 However, sometimes the equation is more complex,
 wich activities and emission factors requring additional information.
-This is where ``ABEmis`` shines.
+This is where ``abemis`` shines.
 
 .. note::
 

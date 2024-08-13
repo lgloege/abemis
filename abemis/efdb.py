@@ -1,6 +1,7 @@
 """Emission factor database."""
 
 import pandas as pd
+from pathlib import Path
 
 
 def waste(region: str = None, gas: str = None, search: str = None, *args, **kwargs):
@@ -20,7 +21,10 @@ def waste(region: str = None, gas: str = None, search: str = None, *args, **kwar
     pd.DataFrame
         pandas dataframe of emission factors
     """
-    df = pd.read_excel("./efdb/EFDB_waste.xlsx")
+    script_dir = Path(__file__).parent
+    file_path = script_dir / "efdb" / "EFDB_waste.xlsx"
+
+    df = pd.read_excel(file_path)
 
     if region:
         df = df.loc[df["Region / Regional Conditions"] == region]
@@ -51,7 +55,10 @@ def ippu(region: str = None, gas: str = None, search: str = None, *args, **kwarg
     pd.DataFrame
         pandas dataframe of emission factors
     """
-    df = pd.read_excel("./efdb/EFDB_ippu.xlsx")
+    script_dir = Path(__file__).parent
+    file_path = script_dir / "efdb" / "EFDB_ippu.xlsx"
+
+    df = pd.read_excel(file_path)
 
     if region:
         df = df.loc[df["Region / Regional Conditions"] == region]

@@ -1,3 +1,4 @@
+bottleneck==1.4.0
 numpy==2.0.1
 numpydoc==1.7.0
 openpyxl==3.1.5

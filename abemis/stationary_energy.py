@@ -31,3 +31,29 @@ def combustion(a, ef):
         emissions of fuel by type
     """  # noqa: E501
     return np.sum(a * ef)
+
+@convert_to_numpy
+def grid_consumption(a, ef):
+    r"""Greenhouse gas emissions from stationary grid energy consumption.
+
+    .. math::
+
+        E = A \cdot EF
+
+    Parameters
+    ----------
+    a : float
+        activity, amount of grid energy consumed
+        units: Tj
+    ef : float
+        emission factor of a given GHG by the grid supply.
+        For CO2, it includes the carbon oxidation factor, assumed to be 1.
+        units: kg gas / TJ
+
+    Returns
+    -------
+    float
+        emissions of stationary energy consumption
+    """  # noqa: E501
+    return np.sum(a * ef)
+

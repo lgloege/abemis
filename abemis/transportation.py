@@ -102,3 +102,28 @@ def electricity_charged(a, ef):
         emissions of transport grid energy consumption
     """  # noqa: E501
     return np.sum(a * ef)
+
+@convert_to_numpy
+def movement_driver(a, ef):
+    r"""Greenhouse gas emissions from transportation of goods or passengers
+
+    .. math::
+
+        E = A \cdot EF
+
+    Parameters
+    ----------
+    a : float
+        activity, amount of goods or passengers transported by kilometer
+        units: pkm (passengers/km) or kgkm (kg/km) 
+    ef : float
+        emission factor of a given GHG by movement driver.
+        For CO2, it includes the carbon oxidation factor, assumed to be 1.
+        units: kg gas / pkm or kg gas / kgkm
+
+    Returns
+    -------
+    float
+        emissions of transportation of goods or passengers
+    """  # noqa: E501
+    return np.sum(a * ef)

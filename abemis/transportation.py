@@ -77,3 +77,28 @@ def fuel_sales(quantity: float, ef: float) -> float:
         Energy policy 38.9 (2010): 4828-4837. doi: `10.1016/j.enpol.2009.08.050 <doi.org/10.1016/j.enpol.2009.08.050>`_
     """  # noqa: E501
     return np.sum(quantity * ef)
+
+@convert_to_numpy
+def electricity_charged(a, ef):
+    r"""Greenhouse gas emissions from transport grid energy consumption.
+
+    .. math::
+
+        E = A \cdot EF
+
+    Parameters
+    ----------
+    a : float
+        activity, amount of electricity charged by transportation modes
+        units: Tj
+    ef : float
+        emission factor of a given GHG by the grid supply.
+        For CO2, it includes the carbon oxidation factor, assumed to be 1.
+        units: kg gas / TJ
+
+    Returns
+    -------
+    float
+        emissions of transport grid energy consumption
+    """  # noqa: E501
+    return np.sum(a * ef)
